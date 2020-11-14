@@ -20,7 +20,7 @@ windows:
 	sudo scripts/docker-build.sh windows $(windows-exe)
 
 clean:
-	$(RM) $(outdir)
+	rm -rf $(outdir)
 
 .PHONY: all clean
 

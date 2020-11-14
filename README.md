@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/dossalab/conic-palace)](https://goreportcard.com/report/github.com/dossalab/conic-palace)
+
 # Conic Palace - robot control center (WIP)
 
 (see https://github.com/dossalab/conic first)

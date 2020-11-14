@@ -8,8 +8,8 @@
 package main
 
 import (
-    "github.com/gotk3/gotk3/gtk"
-    "log"
+	"github.com/gotk3/gotk3/gtk"
+	"log"
 )
 
 func createLayout(window *gtk.Window) error {

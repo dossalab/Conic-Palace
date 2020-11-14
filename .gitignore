@@ -1,3 +1,7 @@
 *.o
 *.exe
-conic_palace
+conic-palace
+
+# do not add packages from vendor, but keep the directory itself
+vendor/*
+!vendor/.gitkeep 

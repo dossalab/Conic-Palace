@@ -13,3 +13,6 @@ vendor/*
 # docker go build cache
 .cache/
 
+# build directory
+out/
+

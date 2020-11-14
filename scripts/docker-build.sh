@@ -12,13 +12,14 @@
 
 IMAGE_TAG=conic_palace_docker_image
 LOGNAME=$(logname)
+MINGW_ROOT="/usr/x86_64-w64-mingw32/sys-root/mingw"
 
 info() {
 	printf "[info]\t%s\n" "$1"
 }
 
 print_usage() {
-	info "usage $0 [target: windows | linux ]"
+	info "usage $0 [target: windows | linux ] outdir"
 	exit 1
 }
 
@@ -39,16 +40,18 @@ build() {
 		info "building windows app..."
 		docker run \
 			--mount "type=bind,src=$(pwd),dst=/tmp/build" \
-			--env "PKG_CONFIG_PATH=/usr/x86_64-w64-mingw32/sys-root/mingw/lib/pkgconfig" \
+			--env "PKG_CONFIG_PATH=$MINGW_ROOT/lib/pkgconfig" \
 			--env "CGO_ENABLED=1" \
 			--env "CGO_LDFLAGS_ALLOW=-Wl,-luuid" \
 			--env "CC=x86_64-w64-mingw32-gcc" \
 			--env "GOOS=windows" \
 			--env "GOARCH=amd64" \
 			--env "GOCACHE=/tmp/build/.cache/go-build" \
+			--env "MINGW_BUNDLEDLLS_SEARCH_PATH=$MINGW_ROOT/bin" \
 			--workdir /tmp/build \
-			--user "$(id -u $LOGNAME):$(id -g $LOGNAME)" \
-			$IMAGE_TAG go build
+			--user "$(id -u $LOGNAME):$(id -g $LOGNAME)" $IMAGE_TAG \
+			/bin/sh -c "go build -o $2 && \
+			./third_party/mingw-bundledlls --copy $2"
 		;;
 	linux)
 		info "building linux app is not supported for now"
@@ -59,7 +62,7 @@ build() {
 	esac
 }
 
-[ $# -ne 1 ] && print_usage
+[ $# -ne 2 ] && print_usage
 [ $(id -u) -ne 0 ] && info "please, execute as root!" && exit 1
-build $1
+build $1 $2
 

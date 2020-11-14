@@ -8,5 +8,5 @@ This is a sample control application for robot arm.
 
 ## Building
 
-We use go modules now, so fear not - you don't need to care much about GOPATH. Just execute `go mod vendor` to populate libraries and then `go build` - that should be it.
+Use `make native` to build with vanilla go build or `make windows` to cross-build inside docker container. Output will be placed in out/
 

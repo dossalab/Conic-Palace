@@ -11,7 +11,11 @@ outdir = out
 native-exe = $(outdir)/native/conic-palace
 windows-exe = $(outdir)/windows/conic-palace.exe
 
-all: native windows
+all: vendor native windows
+
+vendor:
+	mkdir vendor
+	go mod vendor
 
 native:
 	go build -o $(native-exe)

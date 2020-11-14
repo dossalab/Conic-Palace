@@ -9,3 +9,7 @@ vendor/*
 
 # do not add go mod checksums
 *.sum
+
+# docker go build cache
+.cache/
+

@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dossalab/Conic-Palace.svg?branch=master)](https://travis-ci.org/dossalab/Conic-Palace)
 [![Go Report Card](https://goreportcard.com/badge/github.com/dossalab/conic-palace)](https://goreportcard.com/report/github.com/dossalab/conic-palace)
 
 # Conic Palace - robot control center (WIP)

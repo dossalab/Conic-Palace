@@ -1,0 +1,20 @@
+language: go
+
+go:
+    - 1.14
+
+os:
+    - linux
+
+dist: bionic
+
+install:
+    - sudo apt-get -y install make python3 docker
+
+jobs:
+    include:
+    - script:
+          - make windows
+    - script:
+          - make native
+

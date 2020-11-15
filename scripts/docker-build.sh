@@ -38,6 +38,7 @@ build() {
 	case $1 in
 	windows)
 		info "building windows app..."
+		# oh god, oh fuck
 		docker run \
 			--mount "type=bind,src=$(pwd),dst=/tmp/build" \
 			--env "PKG_CONFIG_PATH=$MINGW_ROOT/lib/pkgconfig" \
@@ -50,8 +51,14 @@ build() {
 			--env "MINGW_BUNDLEDLLS_SEARCH_PATH=$MINGW_ROOT/bin" \
 			--workdir /tmp/build \
 			--user "$(id -u $LOGNAME):$(id -g $LOGNAME)" $IMAGE_TAG \
-			/bin/sh -c "go build -o $2 && \
-			./third_party/mingw-bundledlls --copy $2"
+			/bin/sh -c "go build -o $2 -ldflags -H=windowsgui && \
+			./third_party/mingw-bundledlls --copy $2 && \
+			./scripts/nsisgen.py \
+				--name 'Conic Palace' \
+				--exe '`basename $2`' \
+				--dir '`dirname $2`' \
+				--author 'Conic Software Authors' \
+				--outfile '`dirname $2`/../installer.exe'"
 		;;
 	linux)
 		info "building linux app is not supported for now"

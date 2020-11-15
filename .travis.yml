@@ -16,3 +16,11 @@ jobs:
     - script:
           - make windows
 
+deploy:
+    provider: releases
+    api_key:
+        secure: USJ23dM58SQJTrHySzEAOp2k8zGVO1eEHpePn/1NKEI7ErCs2cAMkbewJBlh2kDPwOB+OsqROD0LIqvRdX/gmcY8+YEAXrMpDuc8rhhzj7FCZGQImgovh5OvviFimOWnOfF1rdCBM9gx5CmCD8Jw38OVkZ5clixLKXDCoyl9QWSDEpmbChFKt8qTaCwiHZMzQJ/vgm46VVwxNENblEObnoqugyHSPpZznv02JXVoSN7IpovHYU4S0tVW3myMq1Pl8lJNsMvOChd7jdiGMkWc0O3IWWcBHvPgYHcKwLLezlpG0xZNDYPcva5VeQeSC6Quqiyra4xSmYuG/qzAgCPVfi+dQHvSp2rHy59Qq1zLhNDcBsNvffTAKTUSrfl1CBtpjZhrr2TWkP3WVlRnKwCwxyNpU58O45q5LAVQT12nrtPzUQtKsblso2uH4WKEJ5sl8e/PK1TnV1zLHcLjtZleLLGb8Q/2/UPwI127LdbPg2LUnko5wMK+dZKYGjVkk0qfhHiz4W+krpJKSPOMky2PliNNiAnLgPK3Iz70lcR/j43pGSzZA+2kgDOjdJ1VK2uiRBLDEIvdmTj4Hrjq7alNVKoZUG1r+ZHTILJcTKE/nvhjcJAEniPI5QupNoCdlbUhlaMIJuLTk5y/wZnXvqscMmGfs1fsqIC+fBzbBXC7wS8=
+    file: out/installer.exe
+    skip_cleanup: true
+    on:
+        tags: true

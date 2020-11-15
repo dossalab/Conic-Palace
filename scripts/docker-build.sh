@@ -53,6 +53,7 @@ build() {
 			--user "$(id -u $LOGNAME):$(id -g $LOGNAME)" $IMAGE_TAG \
 			/bin/sh -c "go build -o $2 -ldflags -H=windowsgui && \
 			./third_party/mingw-bundledlls --copy $2 && \
+			./scripts/copy-icons.sh /usr `dirname $2` && \
 			./scripts/nsisgen.py \
 				--name 'Conic Palace' \
 				--exe '`basename $2`' \

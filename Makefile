@@ -11,20 +11,20 @@ outdir = out
 native-exe = $(outdir)/native/conic-palace
 windows-exe = $(outdir)/windows/conic-palace.exe
 
-all: vendor native windows
+all: native
 
 vendor:
 	mkdir vendor
 	go mod vendor
 
-native:
+native: vendor
 	go build -o $(native-exe)
 
-windows:
+windows: vendor
 	sudo scripts/docker-build.sh windows $(windows-exe)
 
 clean:
 	rm -rf $(outdir)
 
-.PHONY: all clean
+.PHONY: all native windows clean
 

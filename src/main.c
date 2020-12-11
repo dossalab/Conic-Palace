@@ -10,7 +10,7 @@
 #include <cairo.h>
 #include <libconic.h>
 #include <src/connman.h>
-
+#include <util/i18n.h>
 #include <views/main.h>
 #include <views/header.h>
 

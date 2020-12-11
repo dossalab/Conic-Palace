@@ -149,12 +149,12 @@ gboolean on_keypress(GtkWidget *widget, GdkEventKey *event, gpointer data)
 	gboolean retval = FALSE;
 
 	if (event->keyval == GDK_KEY_w){
-		target.y -= 10.0f;
+		target.y += 10.0f;
 		retval = TRUE;
 	}
 
 	if (event->keyval == GDK_KEY_s){
-		target.y += 10.0f;
+		target.y -= 10.0f;
 		retval = TRUE;
 	}
 

@@ -23,9 +23,7 @@ static void app_activate(GtkApplication* app, gpointer user_data)
 	main_view = main_view_instance();
 
 	gtk_window_set_titlebar(GTK_WINDOW(window), header);
-
 	gtk_container_add(GTK_CONTAINER(window), main_view);
-	gtk_container_set_border_width(GTK_CONTAINER(window), 8);
 
 	gtk_widget_add_events(window, GDK_KEY_PRESS_MASK);
 	gtk_widget_show_all(window);

@@ -8,6 +8,7 @@
 #include <widgets/viewport.h>
 #include <util/logger.h>
 #include <librobot.h>
+#include <stdarg.h>
 #include <math.h>
 
 static vec2 target;
@@ -30,19 +31,39 @@ static inline void cairo_point(cairo_t *ctx, float x, float y)
 	cairo_arc(ctx, x, y, 10, 0, 2 * M_PI);
 }
 
+/* Shows flipped text */
+static inline void cairo_text(cairo_t *ctx, const char *msg, ...)
+{
+	cairo_matrix_t font_reflection_matrix;
+	va_list list;
+	char buf[256];
+
+	/* flips text coordinate system upside down too! */
+	cairo_get_font_matrix(ctx, &font_reflection_matrix);
+	cairo_matrix_scale(&font_reflection_matrix, 1, -1);
+	cairo_set_font_matrix(ctx, &font_reflection_matrix);
+
+	va_start(list, msg);
+	vsnprintf(buf, sizeof(buf), msg, list);
+	va_end(list);
+
+	cairo_show_text(ctx, buf);
+}
+
 static inline void update_transform_matrix(void)
 {
 	cairo_matrix_init_identity(&transform_matrix);
 	cairo_matrix_translate(&transform_matrix, center_point.x, center_point.y);
-	cairo_matrix_rotate(&transform_matrix, M_PI);
+
+	/* flips coordinate system upside down */
+	cairo_matrix_scale(&transform_matrix, 1, -1);
 }
 
 static inline void set_target_point(double x, double y)
 {
-	cairo_matrix_transform_point(&transform_matrix, &x, &y);
-
-	target.x = x;
-	target.y = y;
+	/* TODO: use transformation matrix instead */
+	target.x = x - center_point.x;
+	target.y = -y + center_point.y;
 }
 
 static gboolean on_draw(GtkWidget *widget, cairo_t *ctx, gpointer user)
@@ -54,6 +75,7 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *ctx, gpointer user)
 
 	cairo_transform(ctx, &transform_matrix);
 
+	/* Draw arm */
 	cairo_move_to(ctx, \
 		current_joints.j1.position.x, current_joints.j1.position.y);
 	cairo_line_to(ctx, \
@@ -62,20 +84,30 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *ctx, gpointer user)
 		current_joints.j3.position.x, current_joints.j3.position.y);
 	cairo_line_to(ctx, \
 		current_joints.j4.position.x, current_joints.j4.position.y);
-
 	cairo_stroke(ctx);
 
+	/* Draw ground plane */
 	cairo_set_source_rgb(ctx, 0, 0, 0);
 	cairo_set_line_width(ctx, 0.2);
 	cairo_move_to(ctx, center_point.x, 0);
 	cairo_line_to(ctx, -center_point.x, 0);
-
 	cairo_stroke(ctx);
 
+	/* Draw point */
 	cairo_set_source_rgba(ctx, 1.0, 0, 0, 0.2);
 	cairo_point(ctx, target.x, target.y);
-
 	cairo_fill(ctx);
+	cairo_stroke(ctx);
+
+	/* Draw text */
+	cairo_set_font_size(ctx, 20);
+
+	cairo_set_source_rgba(ctx, 0.1, 0.1, 0.1, 0.6);
+	cairo_move_to(ctx, \
+		current_joints.j4.position.x, 10 + current_joints.j4.position.y);
+	cairo_text(ctx, "(%.2f, %.2f)", \
+		current_joints.j4.position.x, current_joints.j4.position.y);
+
 	cairo_stroke(ctx);
 
 	return FALSE;

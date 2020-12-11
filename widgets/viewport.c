@@ -154,6 +154,8 @@ GtkWidget *viewport_create(void)
 	gtk_widget_add_events(canvas, GDK_BUTTON_PRESS_MASK);
 	gtk_widget_add_events(canvas, GDK_POINTER_MOTION_MASK);
 
+	gtk_widget_set_can_focus(canvas, TRUE);
+
 	g_signal_connect(canvas, "draw", G_CALLBACK(on_draw), NULL);
 	g_signal_connect(canvas, "size-allocate", G_CALLBACK(on_resize), NULL);
 
